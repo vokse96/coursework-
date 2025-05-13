@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Оформление заказа</h1>
+<h4>Заказ на сумму: {{cost}}</h4>
+{% for product in products%}
+<div>
+    {{ product.product_group.title }} {{ product.color }} {{ product.cost }} х {{ content[product.id] }}
+</div>
+{% endfor %}
+<form action="" method="post">
+    {{ form.hidden_tag() }}
+    <div>
+        {{ form.csrf_token }}
+    </div>
+    {% for field in form if field.name not in ['csrf_token', 'submit', 'how_pay'] %}
+    <div>
+        {{ field.label() }}
+        {{ field(class="form-control")}}
+        {% for error in field.errors %}
+        <div class="error">{{ error }}</div>
+        {% endfor %}
+    </div>
+    {% endfor %}
+    {{ form.how_pay.label() }}
+    {{ form.how_pay()}}
+    <p>{{ form.submit(type="submit", class="btn btn-primary") }}</p>
+    {{message}}
+</form>
+{% endblock %}
